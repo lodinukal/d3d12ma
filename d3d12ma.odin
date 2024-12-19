@@ -4,9 +4,6 @@ import windows "core:sys/windows"
 import "vendor:directx/d3d12"
 import "vendor:directx/dxgi"
 
-Pool :: struct {
-	using #subtype iunknown: d3d12.IUnknown,
-}
 AllocHandle :: distinct u64
 AllocateFunctionType :: proc "c" (size: uint, alignment: uint, private_data: rawptr) -> rawptr
 FreeFunctionType :: proc "c" (ptr: rawptr, private_data: rawptr)
@@ -68,9 +65,7 @@ VirtualAllocation :: struct {
 	AllocHandle: AllocHandle,
 }
 
-Allocation :: struct {
-	using #subtype iunknown: d3d12.IUnknown,
-}
+Allocation :: distinct rawptr
 
 DEFRAGMENTATION_FLAG :: enum i32 {
 	ALGORITHM_FAST     = 0,
@@ -109,9 +104,7 @@ DEFRAGMENTATION_STATS :: struct {
 	HeapsFreed:       u32,
 }
 
-DefragmentationContext :: struct {
-	using #subtype iunknown: d3d12.IUnknown,
-}
+DefragmentationContext :: distinct rawptr
 
 POOL_FLAG :: enum i32 {
 	ALGORITHM_LINEAR               = 0,
@@ -131,6 +124,8 @@ POOL_DESC :: struct {
 	ResidencyPriority:      d3d12.RESIDENCY_PRIORITY,
 }
 
+Pool :: distinct rawptr
+
 ALLOCATOR_FLAG :: enum i32 {
 	SINGLETHREADED                      = 0,
 	ALWAYS_COMMITTED                    = 1,
@@ -148,9 +143,7 @@ ALLOCATOR_DESC :: struct {
 	pAdapter:             ^dxgi.IAdapter,
 }
 
-Allocator :: struct {
-	using #subtype iunknown: d3d12.IUnknown,
-}
+Allocator :: distinct rawptr
 
 VIRTUAL_BLOCK_FLAG :: enum i32 {
 	ALGORITHM_LINEAR = 1,
@@ -184,9 +177,7 @@ VIRTUAL_ALLOCATION_INFO :: struct {
 	pPrivateData: ^rawptr,
 }
 
-VIRTUAL_BLOCK :: struct {
-	using #subtype iunknown: d3d12.IUnknown,
-}
+VIRTUAL_BLOCK :: distinct rawptr
 when ODIN_OS == .Windows {
 	when ODIN_ARCH == .amd64 {
 		foreign import d3d12ma "lib/d3d12ma_x64.lib"
@@ -251,4 +242,24 @@ foreign d3d12ma {
 	VirtualBlock_FreeStatsString :: proc(block: ^VIRTUAL_BLOCK, pStatsString: windows.LPCWSTR) ---
 	CreateAllocator :: proc(#by_ptr desc: ALLOCATOR_DESC, ppAllocator: ^^Allocator) -> d3d12.HRESULT ---
 	CreateVirtualBlock :: proc(#by_ptr desc: VIRTUAL_BLOCK_DESC, ppVirtualBlock: ^^VIRTUAL_BLOCK) -> d3d12.HRESULT ---
+
+	Allocation_QueryInterface :: proc(alloc: ^Allocation, riid: ^windows.IID, ppvObject: ^rawptr) -> d3d12.HRESULT ---
+	Allocation_AddRef :: proc(alloc: ^Allocation) -> u32 ---
+	Allocation_Release :: proc(alloc: ^Allocation) -> u32 ---
+
+	DefragmentationContext_QueryInterface :: proc(ctx: ^DefragmentationContext, riid: ^windows.IID, ppvObject: ^rawptr) -> d3d12.HRESULT ---
+	DefragmentationContext_AddRef :: proc(ctx: ^DefragmentationContext) -> u32 ---
+	DefragmentationContext_Release :: proc(ctx: ^DefragmentationContext) -> u32 ---
+
+	Pool_QueryInterface :: proc(pool: ^Pool, riid: ^windows.IID, ppvObject: ^rawptr) -> d3d12.HRESULT ---
+	Pool_AddRef :: proc(pool: ^Pool) -> u32 ---
+	Pool_Release :: proc(pool: ^Pool) -> u32 ---
+
+	Allocator_QueryInterface :: proc(alloc: ^Allocator, riid: ^windows.IID, ppvObject: ^rawptr) -> d3d12.HRESULT ---
+	Allocator_AddRef :: proc(alloc: ^Allocator) -> u32 ---
+	Allocator_Release :: proc(alloc: ^Allocator) -> u32 ---
+
+	VirtualBlock_QueryInterface :: proc(block: ^VIRTUAL_BLOCK, riid: ^windows.IID, ppvObject: ^rawptr) -> d3d12.HRESULT ---
+	VirtualBlock_AddRef :: proc(block: ^VIRTUAL_BLOCK) -> u32 ---
+	VirtualBlock_Release :: proc(block: ^VIRTUAL_BLOCK) -> u32 ---
 }

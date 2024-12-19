@@ -139,7 +139,7 @@ main :: proc() {
 	allocator: ^d3d12ma.Allocator
 	hr = d3d12ma.CreateAllocator(allocator_desc, &allocator)
 	check(hr, "Failed to create allocator")
-	defer allocator->Release()
+	defer d3d12ma.Allocator_Release(allocator)
 
 	// Create the swapchain, it's the thing that contains render targets that we draw into. It has 2 render targets (NUM_RENDERTARGETS), giving us double buffering.
 	swapchain: ^dxgi.ISwapChain3
@@ -404,7 +404,7 @@ main :: proc() {
 	vertex_buffer_view: d3d12.VERTEX_BUFFER_VIEW
 
 	defer if vertex_buffer_allocation != nil {
-		vertex_buffer_allocation->Release()
+		d3d12ma.Allocation_Release(vertex_buffer_allocation)
 	}
 
 	{

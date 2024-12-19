@@ -18,7 +18,7 @@ allocator_desc.Flags = {
 allocator: ^d3d12ma.Allocator
 hr = d3d12ma.CreateAllocator(allocator_desc, &allocator)
 check(hr, "Failed to create allocator")
-defer allocator->Release()
+defer d3d12ma.Allocator_Release(allocator)
 
 // creating a resource
 allocation_desc: d3d12ma.ALLOCATION_DESC

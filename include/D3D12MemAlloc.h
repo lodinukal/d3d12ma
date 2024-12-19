@@ -3199,4 +3199,26 @@ d3d12ma_no_name_mangle void D3D12MAVirtualBlock_FreeStatsString(void *pSelf, WCH
 d3d12ma_no_name_mangle HRESULT D3D12MACreateAllocator(const D3D12MA_ALLOCATOR_DESC *pDesc, D3D12MAAllocator **ppAllocator);
 d3d12ma_no_name_mangle HRESULT D3D12MACreateVirtualBlock(const D3D12MA_VIRTUAL_BLOCK_DESC *pDesc, D3D12MAVirtualBlock **ppVirtualBlock);
 
+d3d12ma_no_name_mangle HRESULT D3D12MAAllocation_QueryInterface(void *pSelf, REFIID riid, void **ppvObject);
+d3d12ma_no_name_mangle ULONG D3D12MAAllocation_AddRef(void *pSelf);
+d3d12ma_no_name_mangle ULONG D3D12MAAllocation_Release(void *pSelf);
+
+d3d12ma_no_name_mangle HRESULT D3D12MADefragmentationContext_QueryInterface(void *pSelf, REFIID riid, void **ppvObject);
+d3d12ma_no_name_mangle ULONG D3D12MADefragmentationContext_AddRef(void *pSelf);
+d3d12ma_no_name_mangle ULONG D3D12MADefragmentationContext_Release(void *pSelf);
+
+d3d12ma_no_name_mangle HRESULT D3D12MAPool_QueryInterface(void *pSelf, REFIID riid, void **ppvObject);
+d3d12ma_no_name_mangle ULONG D3D12MAPool_AddRef(void *pSelf);
+d3d12ma_no_name_mangle ULONG D3D12MAPool_Release(void *pSelf);
+
+d3d12ma_no_name_mangle HRESULT
+D3D12MAAllocator_QueryInterface(void *pSelf, REFIID riid, void **ppvObject);
+d3d12ma_no_name_mangle ULONG D3D12MAAllocator_AddRef(void *pSelf);
+d3d12ma_no_name_mangle ULONG D3D12MAAllocator_Release(void *pSelf);
+
+d3d12ma_no_name_mangle HRESULT
+D3D12MAVirtualBlock_QueryInterface(void *pSelf, REFIID riid, void **ppvObject);
+d3d12ma_no_name_mangle ULONG D3D12MAVirtualBlock_AddRef(void *pSelf);
+d3d12ma_no_name_mangle ULONG D3D12MAVirtualBlock_Release(void *pSelf);
+
 #endif // D3D12MA_H

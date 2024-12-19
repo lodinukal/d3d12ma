@@ -2,13 +2,8 @@
 setlocal
 cd /D "%~dp0"
 
-:: set from env first
-if defined VCVARSALL (
-    set VCVARSALL=%VCVARSALL%
-)
-
 :: vs2022
-if not exist %VCVARSALL% (
+if not exist %VCVARSALL% or "%VCVARSALL%" == "" (
     set VCVARSALL="C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Auxiliary\Build\vcvarsall.bat"
 )
 
@@ -37,7 +32,6 @@ exit /b %ERRORLEVEL%
 
 :compile
 call %VCVARSALL% %1
-:: output pdb to build
-call cl /Od /Iinclude src\build.cpp /c /Fo:build\d3d12ma_%1.o /Z7
+call cl /Iinclude src\build.cpp /c /Fo:build\d3d12ma_%1.o /Z7
 call lib build\d3d12ma_%1.o /out:lib\%2.lib
 exit /b 0
