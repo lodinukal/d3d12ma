@@ -59,6 +59,8 @@
 #define D3D12MA_OS_MAC 1
 #elif defined(__gnu_linux__)
 #define D3D12MA_OS_LINUX 1
+#elif defined(_WIN32) || defined(_WIN64)
+#define D3D12MA_OS_WINDOWS 1
 #else
 #error __clang__ is defined, but one of {__APPLE__, __gnu_linux__} is not. This setup is not supported.
 #endif

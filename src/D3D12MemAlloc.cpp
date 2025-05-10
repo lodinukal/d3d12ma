@@ -9429,6 +9429,9 @@ namespace D3D12MA
         case TYPE_HEAP:
             m_Allocator->FreeHeapMemory(this);
             break;
+        default:
+            D3D12MA_ASSERT(0 && "Invalid allocation type.");
+            break;
         }
 
         FreeName();
